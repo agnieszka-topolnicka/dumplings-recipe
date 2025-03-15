@@ -1,0 +1,189 @@
+classDiagram
+    class Zoo {
+        -String name
+        -String location
+        -Date foundedDate
+        -Employee[] staff
+        -Exhibit[] exhibits
+        -Ticket[] ticketTypes
+        +addExhibit(Exhibit)
+        +removeExhibit(Exhibit)
+        +hireEmployee(Employee)
+        +fireEmployee(Employee)
+        +getRevenue()
+        +getDailyVisitorCount()
+    }
+    
+    class Exhibit {
+        -String name
+        -String description
+        -Animal[] animals
+        -Employee[] assignedKeepers
+        -Date openingTime
+        -Date closingTime
+        -int capacity
+        +addAnimal(Animal)
+        +removeAnimal(Animal)
+        +assignKeeper(Employee)
+        +performMaintenance()
+        +getVisitorCount()
+    }
+    
+    class Animal {
+        -String name
+        -Species species
+        -Date dateOfBirth
+        -String sex
+        -MedicalRecord[] medicalHistory
+        -Feeding[] feedingSchedule
+        -String[] specialNeeds
+        +feed()
+        +checkHealth()
+        +transfer(Exhibit)
+        +scheduleVetVisit()
+    }
+    
+    class Species {
+        -String scientificName
+        -String commonName
+        -String conservationStatus
+        -String[] dietRequirements
+        -String[] habitatRequirements
+        -String[] regionOfOrigin
+        +getSpeciesCount()
+        +updateConservationStatus()
+    }
+    
+    class Employee {
+        -String name
+        -String ID
+        -Date hireDate
+        -Role role
+        -Schedule schedule
+        -float salary
+        +clockIn()
+        +clockOut()
+        +requestTimeOff()
+        +assignToExhibit(Exhibit)
+    }
+    
+    class Role {
+        -String title
+        -String description
+        -String[] responsibilities
+        -String[] qualifications
+        -float baseSalary
+        +updateResponsibilities()
+        +adjustBaseSalary()
+    }
+    
+    class Veterinarian {
+        -String[] specializations
+        -Animal[] assignedAnimals
+        +performCheckup(Animal)
+        +prescribeMedication(Animal)
+        +performSurgery(Animal)
+        +createTreatmentPlan(Animal)
+    }
+    
+    class Zookeeper {
+        -Exhibit[] assignedExhibits
+        -Animal[] assignedAnimals
+        +cleanEnclosure(Exhibit)
+        +prepareFood(Animal)
+        +conductTour()
+        +reportAnimalBehavior(Animal)
+    }
+    
+    class Administrator {
+        -String department
+        -Employee[] subordinates
+        +createSchedule()
+        +approveTimeOff()
+        +manageStaffing()
+        +prepareReports()
+    }
+    
+    class Visitor {
+        -String ticketID
+        -Ticket ticketType
+        -Date visitDate
+        -String[] visitedExhibits
+        +purchaseTicket()
+        +viewExhibit(Exhibit)
+        +attendEvent(Event)
+        +provideFeedback()
+    }
+    
+    class Ticket {
+        -String type
+        -float price
+        -String[] benefits
+        -Date validDate
+        -bool isGroupTicket
+        +validate()
+        +refund()
+        +upgrade()
+    }
+    
+    class Event {
+        -String name
+        -String description
+        -Date date
+        -Date startTime
+        -Date endTime
+        -int capacity
+        -Employee[] staff
+        -Ticket[] specialTickets
+        +schedule()
+        +cancel()
+        +registerAttendee(Visitor)
+    }
+    
+    class MedicalRecord {
+        -Date date
+        -String diagnosis
+        -String treatment
+        -Veterinarian attendingVet
+        -String[] medications
+        -String[] followUpNotes
+        +addFollowUpNote()
+        +updateTreatment()
+    }
+    
+    class Feeding {
+        -Date scheduledTime
+        -String[] foodItems
+        -float quantity
+        -String specialInstructions
+        -Employee assignedStaff
+        +markCompleted()
+        +adjustQuantity()
+    }
+    
+    class Schedule {
+        -String[] workDays
+        -Date startTime
+        -Date endTime
+        -Date[] timeOffRequests
+        +addShift()
+        +removeShift()
+        +requestTimeOff()
+    }
+
+    Zoo "1" *-- "many" Exhibit
+    Zoo "1" *-- "many" Employee
+    Exhibit "1" *-- "many" Animal
+    Animal "many" *-- "1" Species
+    Animal "1" *-- "many" MedicalRecord
+    Animal "1" *-- "many" Feeding
+    Employee <|-- Veterinarian
+    Employee <|-- Zookeeper
+    Employee <|-- Administrator
+    Employee "1" *-- "1" Role
+    Employee "1" *-- "1" Schedule
+    Zoo "1" *-- "many" Event
+    Zoo "1" *-- "many" Ticket
+    Visitor "many" o-- "1" Ticket
+    Visitor "many" -- "many" Event
+    MedicalRecord "many" -- "1" Veterinarian
